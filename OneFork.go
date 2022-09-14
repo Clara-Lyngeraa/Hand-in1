@@ -6,7 +6,7 @@ import (
 )
 
 func fork(Lin chan string, Lout chan string, Rin chan string, Rout chan string) {
-	for i := 0; i < 10; i++ {
+	for {
 		select {
 		case <-Lin:
 			//fmt.Println("Left phil asked")
@@ -22,7 +22,7 @@ func fork(Lin chan string, Lout chan string, Rin chan string, Rout chan string) 
 }
 
 func phil(Lin chan string, Lout chan string, Rin chan string, Rout chan string) {
-	for i := 0; i < 3; i++ {
+	for i := 0; i < 10; i++ {
 
 		Lin <- "are u availabe"
 		<-Lout
@@ -95,12 +95,16 @@ func main() {
 	go phil(ch12, ch13, ch10, ch11)
 	go phil(ch14, ch15, ch16, ch17)
 	go phil(ch0, ch1, ch18, ch19)
+
 	go fork(ch0, ch1, ch2, ch3)
 	go fork(ch4, ch5, ch6, ch7)
 	go fork(ch8, ch9, ch10, ch11)
 	go fork(ch12, ch13, ch14, ch15)
 	go fork(ch16, ch17, ch18, ch19)
 
-	time.Sleep(5 * time.Second)
+	//time.Sleep(10 * time.Second)
+	for {
+
+	}
 
 }
