@@ -6,27 +6,27 @@ import (
 )
 
 func fork(Lin chan string, Lout chan string, Rin chan string, Rout chan string) {
-
-	select {
-	case <-Lin:
-		fmt.Println("Left phil asked")
-		Lout <- "im available"
-		<-Lin
-	case <-Rin:
-		fmt.Println("Right phil asked")
-		Rout <- "im availabe"
-		<-Rin
+	for i := 0; i < 10; i++ {
+		select {
+		case <-Lin:
+			//fmt.Println("Left phil asked")
+			Lout <- "im available"
+			<-Lin
+		case <-Rin:
+			//fmt.Println("Right phil asked")
+			Rout <- "im availabe"
+			<-Rin
+		}
 	}
 
 }
 
 func phil(Lin chan string, Lout chan string, Rin chan string, Rout chan string) {
 	for i := 0; i < 3; i++ {
-		fmt.Println("Started phil")
 
 		Lin <- "are u availabe"
 		<-Lout
-		fmt.Println("Picked up left fork")
+		//fmt.Println("Picked up left fork")
 		Rin <- "are u availabe"
 		<-Rout
 		fmt.Println("eating")
@@ -35,8 +35,8 @@ func phil(Lin chan string, Lout chan string, Rin chan string, Rout chan string) 
 		Lin <- "Done"
 		Rin <- "Done"
 
-		fmt.Println("Finished phil")
 	}
+	fmt.Println("-----------Finished phil--------------")
 }
 
 func delay() {
@@ -95,23 +95,12 @@ func main() {
 	go phil(ch12, ch13, ch10, ch11)
 	go phil(ch14, ch15, ch16, ch17)
 	go phil(ch0, ch1, ch18, ch19)
-
 	go fork(ch0, ch1, ch2, ch3)
 	go fork(ch4, ch5, ch6, ch7)
 	go fork(ch8, ch9, ch10, ch11)
 	go fork(ch12, ch13, ch14, ch15)
 	go fork(ch16, ch17, ch18, ch19)
-	//go fork(in, out)
 
-	time.Sleep(3 * time.Second)
-	// print1 := <-Lin
-	// print2 := <-Lout
-	// print3 := <-Rout
-	// print4 := <-Rout
-
-	// fmt.Println(print1 + "Lin")
-	// fmt.Println(print2 + "Lout")
-	// fmt.Println(print3 + "Rout")
-	// fmt.Println(print4 + "Rout")
+	time.Sleep(5 * time.Second)
 
 }
